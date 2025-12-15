@@ -1,0 +1,35 @@
+name: C++
+
+on: 
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+
+jobs: 
+    unit-tests:
+        runs-on: ubuntu-latest
+
+        steps: 
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Install dependencies
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y cmake g++
+
+        - name: Configure 
+          run: |
+            cmake -S . -B build \
+                -DNSQUEUE_BUILD_TESTS=ON \
+                -DNSQUEUE_BUILD_BENCHMARKS=OFF \
+                -DCMAKE_BUILD_TYPE=Release
+
+        - name: Build
+          run: |
+            cmake --build build --config Release
+
+        - name: Run unit tests
+          run: |
+            ctest --test-dir build -L unit --output-on-failure

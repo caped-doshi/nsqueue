@@ -113,7 +113,7 @@ TEST_CASE("wrap around", "[unit]"){
     REQUIRE(q.empty());
 };
 
-TEST_CASE("stress", "[unit]"){
+TEST_CASE("stress", "[stress]"){
     constexpr int N = 200'000;
     nsqueue::spsc_queue<int,1024> q;
 
